@@ -48,7 +48,7 @@ public class VideoSvc implements VideoSvcApi {
 	// do the injection.
 	//
 	@Autowired
-	private VideoRepository videos;
+	private VideoRepository videoRepository;
 
 	// Receives POST requests to /video and converts the HTTP
 	// request body, which should contain json, into a Video
@@ -67,7 +67,7 @@ public class VideoSvc implements VideoSvcApi {
 	//
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.POST)
 	public @ResponseBody boolean addVideo(@RequestBody Video v){
-		 videos.save(v);
+		 videoRepository.save(v);
 		 return true;
 	}
 	
@@ -77,7 +77,7 @@ public class VideoSvc implements VideoSvcApi {
 	// annotation.
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.GET)
 	public @ResponseBody Collection<Video> getVideoList(){
-		return Lists.newArrayList(videos.findAll());
+		return Lists.newArrayList(videoRepository.findAll());
 	}
 	
 	// Receives GET requests to /video/find and returns all Videos
@@ -89,7 +89,7 @@ public class VideoSvc implements VideoSvcApi {
 			// string as the value for the title method parameter
 			@RequestParam(TITLE_PARAMETER) String title
 	){
-		return videos.findByName(title);
+		return videoRepository.findByName(title);
 	}
 
 }

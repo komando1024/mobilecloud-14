@@ -26,39 +26,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-// This annotation tells Spring to auto-wire your application
 @EnableAutoConfiguration
-// This annotation tells Spring to look for controllers, etc.
-// starting in the current package
 @ComponentScan
-//This annotation tells Spring that this class contains configuration
-//information
-//for the application.
 @Configuration
 public class Application {
 
 	private static final String MAX_REQUEST_SIZE = "150MB";
 
-	// The entry point to the application.
 	public static void main(String[] args) {
-		// This call tells spring to launch the application and
-		// use the configuration specified in LocalApplication to
-		// configure the application's components.
 		SpringApplication.run(Application.class, args);
 	}
 
-	// This configuration element adds the ability to accept multipart
-	// requests to the web container.
 	@Bean
     public MultipartConfigElement multipartConfigElement() {
-		// Setup the application container to be accept multipart requests
 		final MultiPartConfigFactory factory = new MultiPartConfigFactory();
-		// Place upper bounds on the size of the requests to ensure that
-		// clients don't abuse the web container by sending huge requests
 		factory.setMaxFileSize(MAX_REQUEST_SIZE);
 		factory.setMaxRequestSize(MAX_REQUEST_SIZE);
 
-		// Return the configuration to setup multipart in the container
 		return factory.createMultipartConfig();
 	}
 

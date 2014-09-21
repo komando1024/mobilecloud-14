@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.magnum.mobilecloud.video.controller.Video;
+import org.springframework.stereotype.Repository;
 
 /**
  * An implementation of the VideoRepository that does not allow duplicate
@@ -20,6 +21,7 @@ import org.magnum.mobilecloud.video.controller.Video;
  * @author jules
  *
  */
+@Repository
 public class NoDuplicatesVideoRepository implements VideoRepository {
 
 	// Sets only store one instance of each object and will not

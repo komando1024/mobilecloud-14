@@ -10,6 +10,7 @@ import org.apache.http.HttpStatus;
 import org.magnum.mobilecloud.video.client.VideoSvcApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -100,18 +101,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			// Allow everyone to access the logout URL
 			.permitAll();
 		
-		// Require clients to login and have an account with the "user" role
-		// in order to access /video
-		// http.authorizeRequests().antMatchers("/video").hasRole("user");
-		
-		// Require clients to login and have an account with the "user" role
-		// in order to send a POST request to /video
-		// http.authorizeRequests().antMatchers(HttpMethod.POST, "/video").hasRole("user");
-		
 		// We force clients to authenticate before accessing ANY URLs 
 		// other than the login and lougout that we have configured above.
 		http.authorizeRequests().anyRequest().authenticated();
-	}
+
+		// Require clients to login and have an account with the "user" role
+		// in order to access /video
+		http.authorizeRequests().antMatchers("/video").hasAnyRole("user", "admin");		
+}
 
 	/**
 	 * 

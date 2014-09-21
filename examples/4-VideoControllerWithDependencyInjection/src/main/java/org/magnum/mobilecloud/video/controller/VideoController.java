@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 // Tell Spring that this class is a Controller that should 
 // handle certain HTTP requests for the DispatcherServlet
 @Controller
-public class VideoSvc implements VideoSvcApi {
+public class VideoController implements VideoSvcApi {
 	
 	// The VideoRepository that we are going to store our videos
 	// in. We don't explicitly construct a VideoRepository, but
@@ -45,7 +45,7 @@ public class VideoSvc implements VideoSvcApi {
 	// do the injection.
 	//
 	@Autowired
-	private VideoRepository videos;
+	private VideoRepository videoRepository;
 
 	// Receives POST requests to /video and converts the HTTP
 	// request body, which should contain json, into a Video
@@ -64,7 +64,7 @@ public class VideoSvc implements VideoSvcApi {
 	//
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.POST)
 	public @ResponseBody boolean addVideo(@RequestBody Video v){
-		return videos.addVideo(v);
+		return videoRepository.addVideo(v);
 	}
 	
 	// Receives GET requests to /video and returns the current
@@ -73,7 +73,7 @@ public class VideoSvc implements VideoSvcApi {
 	// annotation.
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.GET)
 	public @ResponseBody Collection<Video> getVideoList(){
-		return videos.getVideos();
+		return videoRepository.getVideos();
 	}
 	
 	// Receives GET requests to /video/find and returns all Videos
@@ -85,7 +85,7 @@ public class VideoSvc implements VideoSvcApi {
 			// string as the value for the title method parameter
 			@RequestParam(TITLE_PARAMETER) String title
 	){
-		return videos.findByTitle(title);
+		return videoRepository.findByTitle(title);
 	}
 
 }

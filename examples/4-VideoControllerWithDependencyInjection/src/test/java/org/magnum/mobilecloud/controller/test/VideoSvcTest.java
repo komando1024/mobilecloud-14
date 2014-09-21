@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.magnum.mobilecloud.video.TestData;
 import org.magnum.mobilecloud.video.controller.Video;
-import org.magnum.mobilecloud.video.controller.VideoSvc;
+import org.magnum.mobilecloud.video.controller.VideoController;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -47,7 +47,7 @@ public class VideoSvcTest {
 	// Automatically inject the mock VideoRepository into the VideoSvc
 	// object
 	@InjectMocks
-	private VideoSvc videoService;
+	private VideoController videoService;
 
 	private Video video = TestData.randomVideo();
 

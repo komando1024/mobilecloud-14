@@ -36,7 +36,7 @@ public interface VideoRepository extends CrudRepository<Video, Long>{
 			@Param(VideoSvcApi.TITLE_PARAMETER) String title);
 	
 	// Find all videos that are shorter than a specified duration
-	public Collection<Video> findByDurationLessThan(
+	public Collection<Video> findByDurationLessThanEqual(
 			// The @Param annotation tells tells Spring Data Rest which HTTP request
 			// parameter it should use to fill in the "duration" variable used to
 			// search for Videos

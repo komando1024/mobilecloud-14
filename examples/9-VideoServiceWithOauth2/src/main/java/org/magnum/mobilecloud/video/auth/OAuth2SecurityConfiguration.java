@@ -55,8 +55,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class OAuth2SecurityConfiguration {
 
-	// This first section of the configuration just makes sure that Spring Security picks
-	// up the UserDetailsService that we create below. 
+
+	/**
+	 * This first section of the configuration just makes sure that Spring Security picks
+	 * up the UserDetailsService that we create below. 
+	 */
 	@Configuration
 	@EnableWebSecurity
 	protected static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -65,8 +68,7 @@ public class OAuth2SecurityConfiguration {
 		private UserDetailsService userDetailsService;
 		
 		@Autowired
-		protected void registerAuthentication(
-				final AuthenticationManagerBuilder auth) throws Exception {
+		protected void registerAuthentication(final AuthenticationManagerBuilder auth) throws Exception {
 			auth.userDetailsService(userDetailsService);
 		}
 	}
@@ -77,8 +79,7 @@ public class OAuth2SecurityConfiguration {
 	 */
 	@Configuration
 	@EnableResourceServer
-	protected static class ResourceServer extends
-			ResourceServerConfigurerAdapter {
+	protected static class ResourceServer extends ResourceServerConfigurerAdapter {
 
 		// This method configures the OAuth scopes required by clients to access
 		// all of the paths in the video service.
@@ -87,9 +88,9 @@ public class OAuth2SecurityConfiguration {
 			
 			http.csrf().disable();
 			
-			http
-			.authorizeRequests()
-				.antMatchers("/oauth/token").anonymous();
+			http.authorizeRequests()
+				.antMatchers("/oauth/token")
+				.anonymous();
 			
 			
 			// If you were going to reuse this class in another
@@ -97,14 +98,12 @@ public class OAuth2SecurityConfiguration {
 			// would want to change
 			
 			// Require all GET requests to have client "read" scope
-			http
-			.authorizeRequests()
+			http.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/**")
 				.access("#oauth2.hasScope('read')");
 			
 			// Require all other requests to have "write" scope
-			http
-			.authorizeRequests()
+			http.authorizeRequests()
 				.antMatchers("/**")
 				.access("#oauth2.hasScope('write')");
 		}
@@ -118,8 +117,7 @@ public class OAuth2SecurityConfiguration {
 	@Configuration
 	@EnableAuthorizationServer
 	@Order(Ordered.LOWEST_PRECEDENCE - 100)
-	protected static class OAuth2Config extends
-			AuthorizationServerConfigurerAdapter {
+	protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
 		// Delegate the processing of Authentication requests to the framework
 		@Autowired
@@ -151,16 +149,22 @@ public class OAuth2SecurityConfiguration {
 			ClientDetailsService csvc = new InMemoryClientDetailsServiceBuilder()
 					// Create a client that has "read" and "write" access to the
 			        // video service
-					.withClient("mobile").authorizedGrantTypes("password")
+					.withClient("mobile")
+					.authorizedGrantTypes("password")
 					.authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-					.scopes("read","write").resourceIds("video")
+					.scopes("read","write")
+					.resourceIds("video")
 					.and()
 					// Create a second client that only has "read" access to the
 					// video service
-					.withClient("mobileReader").authorizedGrantTypes("password")
+					.withClient("mobileReader")
+					.authorizedGrantTypes("password")
 					.authorities("ROLE_CLIENT")
-					.scopes("read").resourceIds("video")
-					.accessTokenValiditySeconds(3600).and().build();
+					.scopes("read")
+					.resourceIds("video")
+					.accessTokenValiditySeconds(3600)
+					.and()
+					.build();
 
 			// Create a series of hard-coded users. 
 			UserDetailsService svc = new InMemoryUserDetailsManager(
@@ -202,8 +206,7 @@ public class OAuth2SecurityConfiguration {
 		 * to process authentication requests.
 		 */
 		@Override
-		public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-				throws Exception {
+		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 			endpoints.authenticationManager(authenticationManager);
 		}
 
@@ -212,35 +215,12 @@ public class OAuth2SecurityConfiguration {
 		 * authenticate clients with.
 		 */
 		@Override
-		public void configure(ClientDetailsServiceConfigurer clients)
-				throws Exception {
+		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 			clients.withClientDetails(clientDetailsService());
 		}
 
 	}
-	
-	
-    // This version uses the Tomcat web container and configures it to
-	// support HTTPS. The code below performs the configuration of Tomcat
-	// for HTTPS. Each web container has a different API for configuring
-	// HTTPS. 
-	//
-	// The app now requires that you pass the location of the keystore and
-	// the password for your private key that you would like to setup HTTPS
-	// with. In Eclipse, you can set these options by going to:
-	//    1. Run->Run Configurations
-	//    2. Under Java Applications, select your run configuration for this app
-	//    3. Open the Arguments tab
-	//    4. In VM Arguments, provide the following information to use the
-	//       default keystore provided with the sample code:
-	//
-	//       -Dkeystore.file=src/main/resources/private/keystore -Dkeystore.pass=changeit
-	//
-	//    5. Note, this keystore is highly insecure! If you want more securtiy, you 
-	//       should obtain a real SSL certificate:
-	//
-	//       http://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html
-	//
+
     @Bean
     EmbeddedServletContainerCustomizer containerCustomizer(
             @Value("${keystore.file:src/main/resources/private/keystore}") String keystoreFile,

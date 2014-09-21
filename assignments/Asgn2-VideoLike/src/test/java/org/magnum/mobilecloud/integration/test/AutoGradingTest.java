@@ -46,7 +46,7 @@ public class AutoGradingTest {
 		}
 	}
 
-	private final String TEST_URL = "https://localhost:8443";
+	private final String TEST_URL = "http://localhost:8080";
 
 	private final String USERNAME1 = "admin";
 	private final String USERNAME2 = "user0";
