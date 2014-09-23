@@ -2,14 +2,18 @@ package org.magnum.mobilecloud.video.service;
 
 import java.util.Collection;
 
-import org.magnum.mobilecloud.video.repository.Video;
+import org.magnum.mobilecloud.video.model.Video;
 
-public interface VideoServiceInterface {
+public interface IVideoService {
 
-	public Collection<Video> getVideoList();
+	Collection<Video> getVideoList();
 
-	public Video addVideo(Video video);
+	Video addVideo(Video video);
 
-	public Video findVideoById(long id);
+	Video findVideoById(long id);
+	
+	Collection<Video> findVideoByName(String name);
+
+	Collection<Video> findVideoByDuration(long duration);
 
 }
