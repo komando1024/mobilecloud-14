@@ -36,10 +36,10 @@ public class VideoServiceImpl implements IVideoService {
 	public Video addVideo(Video video) {
 		LOGGER.info("addVideo");
 
-		video.setUrl(getDataUrl(video.getId()));
 		Video myVideo = videoRepository.save(video);
+		myVideo.setUrl(getDataUrl(video.getId()));
 
-		return myVideo;
+		return videoRepository.save(myVideo);
 	}
 
 	@Override
